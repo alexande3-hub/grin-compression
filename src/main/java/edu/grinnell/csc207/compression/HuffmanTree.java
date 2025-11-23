@@ -1,6 +1,10 @@
 package edu.grinnell.csc207.compression;
 
+
 import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.Set;
+
 
 /**
  * A HuffmanTree derives a space-efficient coding of a collection of byte
@@ -15,14 +19,40 @@ import java.util.Map;
  * our byte values.
  */
 public class HuffmanTree {
+    private static class Node {
+        int value;
+        Node left;
+        Node right;
+        public Node(int value, Node left, Node right) {
+            this.value = value;
+            this.left = left;
+            this.right = right;
+        }
+        Map.Entry<Short, Integer> val2;
+        public Node(Map.Entry<Short, Integer> val2) {
+            this.val2 = val2;
+        }
+    }
+
 
     /**
      * Constructs a new HuffmanTree from a frequency map.
      * @param freqs a map from 9-bit values to frequencies.
      */
     public HuffmanTree (Map<Short, Integer> freqs) {
-        // TODO: fill me in!
-    }
+        Set<Map.Entry<Short, Integer>> set = freqs.entrySet();
+        PriorityQueue<Node> priFreq = new PriorityQueue<Node>();
+        for (Map.Entry<Short, Integer> pair : set) {
+            Node node = new Node(pair);
+            priFreq.add(node);
+        }
+        while (priFreq.size() != 0) {
+            Node p1 = priFreq.poll();
+            Node p2 = priFreq.poll();
+            Node node = new Node((p1.val2.getValue() + p2.val2.getValue()), p1, p2);
+            priFreq.add(node);
+        }
+        }
 
     /**
      * Constructs a new HuffmanTree from the given file.
