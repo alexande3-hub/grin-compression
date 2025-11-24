@@ -28,6 +28,7 @@ public class HuffmanTree {
             this.value = value;
             this.left = left;
             this.right = right;
+            this.ch = null;
         }
         Map.Entry<Short, Integer> val2;
         public Node(Map.Entry<Short, Integer> val2) {
@@ -106,6 +107,8 @@ public class HuffmanTree {
     public void serialize (BitOutputStream out) {
         serial(out, this.first);
     }
+
+    
    
     /**
      * Encodes the file given as a stream of bits into a compressed format
@@ -118,6 +121,22 @@ public class HuffmanTree {
         // TODO: fill me in!
     }
 
+    public Short findVal(BitInputStream in, Node node) {
+        if (node.ch != null) {
+            if (node.ch == 256) {
+                return 256;
+            } else {
+                return node.ch;
+            }
+        } else {
+            if (in.readBit() == 1) {
+                return findVal(in, node.right);
+            } else {
+                return findVal(in, node.left);
+            }
+        }
+    }
+
     /**
      * Decodes a stream of huffman codes from a file given as a stream of
      * bits into their uncompressed form, saving the results to the given
@@ -127,6 +146,13 @@ public class HuffmanTree {
      * @param out the file to write the decompressed output to.
      */
     public void decode (BitInputStream in, BitOutputStream out) {
-        // TODO: fill me in!
+        while (true) {
+            Short outVal = findVal(in, this.first);
+            if (outVal != 256) {
+                out.writeBits(findVal(in, this.first), 8);
+            } else {
+                break;
+            }
+        }
     }
 }

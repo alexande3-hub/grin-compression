@@ -1,5 +1,6 @@
 package edu.grinnell.csc207.compression;
 
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -11,9 +12,11 @@ public class Grin {
      * .grin file denoted by outfile.
      * @param infile the file to decode
      * @param outfile the file to ouptut to
+     * @throws IOException 
      */
-    public static void decode (String infile, String outfile) {
-        // TODO: fill me in!
+    public static void decode (String infile, String outfile) throws IOException {
+        BitInputStream bin = new BitInputStream(infile);
+        BitInputStream bout = new BitInputStream(outfile);
     }
 
     /**
@@ -22,9 +25,10 @@ public class Grin {
      * BitInputStream, consuming 8 bits at a time.
      * @param file the file to read
      * @return a freqency map for the given file
+     * @throws IOException 
      */
-    public static Map<Short, Integer> createFrequencyMap (String file) {
-        // TODO: fill me in!
+    public static Map<Short, Integer> createFrequencyMap (String file) throws IOException {
+        BitInputStream b = new BitInputStream(file);
         return null;
     }
 
@@ -33,9 +37,13 @@ public class Grin {
      * .grin file denoted by outfile.
      * @param infile the file to encode.
      * @param outfile the file to write the output to.
+     * @throws IOException 
      */
-    public static void encode(String infile, String outfile) {
-        // TODO: fill me in!
+    public static void encode(String infile, String outfile) throws IOException {
+        Map<Short, Integer> map = createFrequencyMap(infile);
+        BitInputStream bin = new BitInputStream(infile);
+        BitInputStream bout = new BitInputStream(outfile);
+        HuffmanTree tree = new HuffmanTree(map);
     }
 
     /**
@@ -43,7 +51,9 @@ public class Grin {
      * @param args the command-line arguments.
      */
     public static void main(String[] args) {
-        // TODO: fill me in!
+        if (args[0] == "encode") {
+            
+        }
         System.out.println("Usage: java Grin <encode|decode> <infile> <outfile>");
     }
 }
