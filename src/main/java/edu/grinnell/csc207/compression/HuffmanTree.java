@@ -20,6 +20,7 @@ import java.util.Set;
  */
 public class HuffmanTree {
     private static class Node {
+        Short ch;
         int value;
         Node left;
         Node right;
@@ -31,15 +32,30 @@ public class HuffmanTree {
         Map.Entry<Short, Integer> val2;
         public Node(Map.Entry<Short, Integer> val2) {
             this.val2 = val2;
+            this.ch = val2.getKey();
+            this.left = null;
+            this.right = null;
+        }
+        char val3;
+        public Node(char val3) {
+            this.val3 = val3;
+            this.left = null;
+            this.right = null;
+        }
+        public Node(Node left, Node right) {
+            this.left = left;
+            this.right = right;
         }
     }
 
+    private Node first;
 
     /**
      * Constructs a new HuffmanTree from a frequency map.
      * @param freqs a map from 9-bit values to frequencies.
      */
     public HuffmanTree (Map<Short, Integer> freqs) {
+        freqs.put((short) 256, 1);
         Set<Map.Entry<Short, Integer>> set = freqs.entrySet();
         PriorityQueue<Node> priFreq = new PriorityQueue<Node>();
         for (Map.Entry<Short, Integer> pair : set) {
@@ -51,15 +67,35 @@ public class HuffmanTree {
             Node p2 = priFreq.poll();
             Node node = new Node((p1.val2.getValue() + p2.val2.getValue()), p1, p2);
             priFreq.add(node);
+            this.first = node;
         }
-        }
+    }
 
     /**
      * Constructs a new HuffmanTree from the given file.
      * @param in the input file (as a BitInputStream)
      */
     public HuffmanTree (BitInputStream in) {
-        // TODO: fill me in!
+        int bit = in.readBit();
+        while (bit != -1) {
+            if (bit == 0) {
+                this.first = new Node((char) in.readBits(9));
+            } else {
+                this.first = new Node(new HuffmanTree(in).first, new HuffmanTree(in).first);
+            }
+            bit = in.readBit();
+        }
+    }
+
+    public void serial (BitOutputStream out, Node node) {
+        if (node.left == null && node.right == null) {
+            out.writeBit(0);
+            out.writeBits((int) this.first.ch, 9);
+        } else {
+            out.writeBit(1);
+            serial(out, node.left);
+            serial(out, node.right);
+        }
     }
 
     /**
@@ -68,7 +104,7 @@ public class HuffmanTree {
      * @param out the output file as a BitOutputStream
      */
     public void serialize (BitOutputStream out) {
-        // TODO: fill me in!
+        serial(out, this.first);
     }
    
     /**
