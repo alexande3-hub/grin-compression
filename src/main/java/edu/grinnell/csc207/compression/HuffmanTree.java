@@ -107,8 +107,6 @@ public class HuffmanTree {
     public void serialize (BitOutputStream out) {
         serial(out, this.first);
     }
-
-    
    
     /**
      * Encodes the file given as a stream of bits into a compressed format
@@ -118,7 +116,14 @@ public class HuffmanTree {
      * @param out the file to write the compressed output to.
      */
     public void encode (BitInputStream in, BitOutputStream out) {
-        // TODO: fill me in!
+        long bits = in.readBits(8);
+        Long bit2 = bits;
+        while (true) {
+            if (bits != 256) {
+                short sh = bit2.shortValue();
+                
+            }
+        }
     }
 
     public Short findVal(BitInputStream in, Node node) {

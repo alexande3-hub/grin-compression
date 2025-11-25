@@ -16,7 +16,10 @@ public class Grin {
      */
     public static void decode (String infile, String outfile) throws IOException {
         BitInputStream bin = new BitInputStream(infile);
-        BitInputStream bout = new BitInputStream(outfile);
+        BitOutputStream bout = new BitOutputStream(outfile);
+        bin.readBits(32);
+        HuffmanTree tree = new HuffmanTree(bin);
+        tree.decode(bin, bout);
     }
 
     /**
@@ -29,7 +32,20 @@ public class Grin {
      */
     public static Map<Short, Integer> createFrequencyMap (String file) throws IOException {
         BitInputStream b = new BitInputStream(file);
-        return null;
+        Map<Short, Integer> map = Map.of();
+        while (true) {
+            int bits = b.readBits(8);
+            if (bits != 256) {
+                if (map.containsKey((short) bits)) {
+                    map.replace((short) bits, map.get((short) bits), map.get((short) bits) + 1);
+                } else {
+                    map.put((short) bits, 1);
+                }
+            } else {
+                break;
+            }
+        }
+        return map;
     }
 
     /**
@@ -42,18 +58,25 @@ public class Grin {
     public static void encode(String infile, String outfile) throws IOException {
         Map<Short, Integer> map = createFrequencyMap(infile);
         BitInputStream bin = new BitInputStream(infile);
-        BitInputStream bout = new BitInputStream(outfile);
+        BitOutputStream bout = new BitOutputStream(outfile);
         HuffmanTree tree = new HuffmanTree(map);
+        bout.writeBits(1846, 32);
+        tree.serialize(bout);
+        tree.encode(bin, bout);
     }
 
     /**
      * The entry point to the program.
      * @param args the command-line arguments.
+     * @throws IOException 
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         if (args[0] == "encode") {
-            
+            encode(args[1], args[2]);
+        } else if (args[0] == "decode") {
+            decode(args[1], args[2]);
+        } else {
+            System.out.println("First argument must be 'encode' or 'decode'.");
         }
-        System.out.println("Usage: java Grin <encode|decode> <infile> <outfile>");
     }
 }
