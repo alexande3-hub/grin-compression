@@ -107,6 +107,16 @@ public class HuffmanTree {
     public void serialize (BitOutputStream out) {
         serial(out, this.first);
     }
+
+    public Map<Short, String> codeMap(Map<Short, String> map, Node node, String s) {
+        if (node.left == null && node.right == null) {
+            map.put(node.ch, s);
+        } else {
+            codeMap(map, node.left, s + "0");
+            codeMap(map, node.right, s + "1");
+        }
+        return map;
+    }
    
     /**
      * Encodes the file given as a stream of bits into a compressed format
@@ -116,13 +126,11 @@ public class HuffmanTree {
      * @param out the file to write the compressed output to.
      */
     public void encode (BitInputStream in, BitOutputStream out) {
-        long bits = in.readBits(8);
-        Long bit2 = bits;
-        while (true) {
-            if (bits != 256) {
-                short sh = bit2.shortValue();
-                
-            }
+        Map<Short, String> map = codeMap(Map.of(), this.first, "");
+        int bits = in.readBits(8);
+        while (bits != -1) {
+            out.writeBits(Integer.parseInt(map.get((short) bits)), map.get((short) bits).length());
+            bits = in.readBits(8);
         }
     }
 
