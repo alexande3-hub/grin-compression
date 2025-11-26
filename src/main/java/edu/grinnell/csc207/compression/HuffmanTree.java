@@ -88,6 +88,12 @@ public class HuffmanTree {
         }
     }
 
+    /**
+     * Writes this HuffmanTree to the given file as a stream of bits in a
+     * serialized format.
+     * @param out the output file as a BitOutputStream
+     * @param node the node we detect for any values (writes 0 for leaf, 1 for interior node).
+     */
     public void serial (BitOutputStream out, Node node) {
         if (node.left == null && node.right == null) {
             out.writeBit(0);
@@ -108,6 +114,14 @@ public class HuffmanTree {
         serial(out, this.first);
     }
 
+    /**
+     * Adds short-string pairings based on the path to get to each short in the tree.
+     * @param map the starting map (empty).
+     * @param node the current node we are looking at.
+     * @param s the string we manipulate to pair unique binary strings with each short
+     * in the map.
+     * @return the completed map with short-string pairings.
+     */
     public Map<Short, String> codeMap(Map<Short, String> map, Node node, String s) {
         if (node.left == null && node.right == null) {
             map.put(node.ch, s);
@@ -134,6 +148,12 @@ public class HuffmanTree {
         }
     }
 
+    /**
+     * Finds a value based on the binary pattern in 'in' (left if 0, right if 1).
+     * @param in the input stream we read bits from.
+     * @param node the current node we look at to find a value.
+     * @return the value found from what we read from 'in'.
+     */
     public Short findVal(BitInputStream in, Node node) {
         if (node.ch != null) {
             if (node.ch == 256) {

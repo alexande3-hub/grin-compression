@@ -20,6 +20,8 @@ public class Grin {
         bin.readBits(32);
         HuffmanTree tree = new HuffmanTree(bin);
         tree.decode(bin, bout);
+        bout.close();
+        bin.close();
     }
 
     /**
@@ -45,6 +47,7 @@ public class Grin {
                 break;
             }
         }
+        b.close();
         return map;
     }
 
@@ -63,6 +66,8 @@ public class Grin {
         bout.writeBits(1846, 32);
         tree.serialize(bout);
         tree.encode(bin, bout);
+        bout.close();
+        bin.close();
     }
 
     /**
