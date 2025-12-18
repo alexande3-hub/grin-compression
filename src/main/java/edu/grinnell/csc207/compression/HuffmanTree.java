@@ -20,7 +20,7 @@ import java.util.Set;
  * our byte values.
  */
 public class HuffmanTree {
-    private static class Node implements Comparable<Node>{
+    private static class Node implements Comparable<Node> {
         Short ch;
         int value;
         Node left;
@@ -59,17 +59,17 @@ public class HuffmanTree {
                     return 1;
                 } else if (n.val2 == null) {
                     return -1;
-                } else if (this.value < n.value){
+                } else if (this.value < n.value) {
                     return -1;
-                } else if(this.value > n.value){
+                } else if (this.value > n.value) {
                     return 1;
                 } else {
                     return 0;
                 }
             } else {
-                if (this.value < n.value){
+                if (this.value < n.value) {
                     return -1;
-                } else if(this.value > n.value){
+                } else if (this.value > n.value) {
                     return 1;
                 } else {
                     return 0;
