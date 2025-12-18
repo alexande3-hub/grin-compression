@@ -13,10 +13,10 @@ public class Tests {
      */
     @Test
     public void test1() throws IOException {
-        Grin.decode("../../../../../../../files/huffman-example.grin", 
-        "../../../../../../../files/huffman-example2.txt");
-        assertEquals("../../../../../../../files/huffman-example.txt", 
-            "../../../../../../../files/huffman-example2.txt"
+        Grin.decode("/home/alexande3/CSC207/grin-compression/files/huffman-example.grin", 
+        "/home/alexande3/CSC207/grin-compression/files/huffman-example2.txt");
+        assertEquals("/home/alexande3/CSC207/grin-compression/files/huffman-example.txt", 
+            "/home/alexande3/CSC207/grin-compression/files/huffman-example2.txt"
         );
     }
 
@@ -26,10 +26,10 @@ public class Tests {
      */
     @Test
     public void test2() throws IOException {
-        Grin.decode("../../../../../../../files/wikipedia-huffman-coding.grin", 
-        "../../../../../../../files/wikipedia-huffman-coding2.txt");
-        assertEquals("../../../../../../../files/wikipedia-huffman-coding.txt", 
-            "../../../../../../../files/wikipedia-huffman-coding2.txt"
+        Grin.decode("/home/alexande3/CSC207/grin-compression/files/wikipedia-huffman-coding.grin", 
+        "/home/alexande3/CSC207/grin-compression/files/wikipedia-huffman-coding2.txt");
+        assertEquals("/home/alexande3/CSC207/grin-compression/files/wikipedia-huffman-coding.txt", 
+            "/home/alexande3/CSC207/grin-compression/files/wikipedia-huffman-coding2.txt"
         );
     }
 
@@ -39,10 +39,10 @@ public class Tests {
      */
     @Test
     public void test3() throws IOException {
-        Grin.decode("../../../../../../../files/pg2600.grin", 
-        "../../../../../../../files/pg2600.txt");
-        assertEquals("../../../../../../../files/pg2600.txt", 
-            "../../../../../../../files/pg2600.txt"
+        Grin.decode("/home/alexande3/CSC207/grin-compression/files/pg2600.grin", 
+        "/home/alexande3/CSC207/grin-compression/files/pg26002.txt");
+        assertEquals("/home/alexande3/CSC207/grin-compression/files/pg2600.txt", 
+            "/home/alexande3/CSC207/grin-compression/files/pg26002.txt"
         );
     }
 }

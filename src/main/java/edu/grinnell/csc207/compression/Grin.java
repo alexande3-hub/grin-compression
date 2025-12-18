@@ -1,6 +1,7 @@
 package edu.grinnell.csc207.compression;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -14,7 +15,7 @@ public class Grin {
      * @param outfile the file to ouptut to
      * @throws IOException 
      */
-    public static void decode (String infile, String outfile) throws IOException {
+    public static void decode(String infile, String outfile) throws IOException {
         BitInputStream bin = new BitInputStream(infile);
         BitOutputStream bout = new BitOutputStream(outfile);
         bin.readBits(32);
@@ -32,12 +33,12 @@ public class Grin {
      * @return a freqency map for the given file
      * @throws IOException 
      */
-    public static Map<Short, Integer> createFrequencyMap (String file) throws IOException {
+    public static Map<Short, Integer> createFrequencyMap(String file) throws IOException {
         BitInputStream b = new BitInputStream(file);
-        Map<Short, Integer> map = Map.of();
+        Map<Short, Integer> map = new HashMap<Short, Integer>();
         while (true) {
             int bits = b.readBits(8);
-            if (bits != 256) {
+            if (bits != -1) {
                 if (map.containsKey((short) bits)) {
                     map.replace((short) bits, map.get((short) bits), map.get((short) bits) + 1);
                 } else {
@@ -76,9 +77,9 @@ public class Grin {
      * @throws IOException 
      */
     public static void main(String[] args) throws IOException {
-        if (args[0] == "encode") {
+        if (args[0].equals("encode")) {
             encode(args[1], args[2]);
-        } else if (args[0] == "decode") {
+        } else if (args[0].equals("decode")) {
             decode(args[1], args[2]);
         } else {
             System.out.println("First argument must be 'encode' or 'decode'.");
